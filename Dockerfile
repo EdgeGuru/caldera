@@ -121,4 +121,4 @@ EXPOSE 8022
 EXPOSE 2222
 
 # 🔥 ONLY required change for Render
-CMD ["sh", "-c", "python3 server.py --host 0.0.0.0 --port $PORT"]
+CMD ["python3", "server.py"]
