@@ -1,10 +1,11 @@
-# This file uses a staged build, using a different stage to build the UI (magma)
+# This file uses a staged build, using a different stage to build the UI (magma) 
 # Build the UI
 FROM node:23 AS ui-build
 
 WORKDIR /usr/src/app
 
 ADD . .
+
 # Build VueJS front-end
 RUN (cd plugins/magma; npm install && npm run build)
 
@@ -36,6 +37,9 @@ WORKDIR /usr/src/app
 # which should be repeatable.
 ADD . .
 COPY --from=ui-build /usr/src/app/plugins/magma/dist /usr/src/app/plugins/magma/dist
+
+# 🔥 FIX: ensure your config is present in runtime container
+COPY conf/local.yml /usr/src/app/conf/local.yml
 
 # From https://docs.docker.com/build/building/best-practices/
 # Install caldera dependencies
@@ -119,4 +123,5 @@ EXPOSE 8022
 # Default FTP port for FTP C2 channel
 EXPOSE 2222
 
-ENTRYPOINT ["python3", "server.py"]
+# 🔥 FIX: use Render dynamic port
+CMD ["sh", "-c", "python3 server.py --host 0.0.0.0 --port $PORT"]
