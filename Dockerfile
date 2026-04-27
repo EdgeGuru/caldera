@@ -38,9 +38,6 @@ WORKDIR /usr/src/app
 ADD . .
 COPY --from=ui-build /usr/src/app/plugins/magma/dist /usr/src/app/plugins/magma/dist
 
-# 🔥 FIX: ensure your config is present in runtime container
-COPY conf/local.yml /usr/src/app/conf/local.yml
-
 # From https://docs.docker.com/build/building/best-practices/
 # Install caldera dependencies
 RUN apt-get update && \
@@ -123,5 +120,5 @@ EXPOSE 8022
 # Default FTP port for FTP C2 channel
 EXPOSE 2222
 
-# 🔥 FIX: use Render dynamic port
+# 🔥 ONLY required change for Render
 CMD ["sh", "-c", "python3 server.py --host 0.0.0.0 --port $PORT"]
