@@ -121,4 +121,4 @@ EXPOSE 8022
 EXPOSE 2222
 
 # 🔥 ONLY required change for Render
-CMD ["python3", "server.py"]
+CMD ["python3", "server.py", "--fresh"]]
